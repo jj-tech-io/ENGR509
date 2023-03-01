@@ -7,15 +7,16 @@ from tracking_2d import simulator_2d
 
 # Simulator options.
 options = {}
-options['FIG_SIZE'] = [8, 8]
+options['FIG_SIZE'] = [10,10]
 
-options['DRIVE_IN_CIRCLE'] = True
+options['DRIVE_IN_CIRCLE'] = False
 # If False, measurements will be pos_x,pos_y.
 # If True, measurements will be pos_x, pos_y, and current angle of the car.
 
 # Required if driving in circle.
-options['MEASURE_ANGLE'] = True
-options['CONTROL_INPUTS'] = True
+options['MEASURE_ANGLE'] = False
+options['CONTROL_INPUTS'] = False
+options['constant_velocity'] = False
 
 
 class KalmanFilter:
@@ -39,6 +40,7 @@ class KalmanFilter:
 
         # Identity Matrix
         self.I = np.eye(4, )
+        print("initializing KalmanFilter")
         print(F"shape of x {self.x.shape}")
         print(F"shape of SIGMA {self.SIGMA.shape}")
         print(F"shape of R {self.R.shape}")
@@ -73,7 +75,7 @@ class KalmanFilter:
         K = self.SIGMA @ np.transpose(self.C) @ np.linalg.inv(S)
         # print(f"x]{self.x.shape}]+[K]{K.shape}]*[measurements]{np.array([measurements]).shape}")
         measurement_residual = measurements - self.C @ self.x
-        print(f"measurement_residual {measurement_residual.shape}")
+        # print(f"measurement_residual {measurement_residual.shape}")
         self.x = self.x + K@ measurement_residual
         self.SIGMA = (self.I - K @ self.C) @ self.SIGMA
         # Don't forget to update the time.
