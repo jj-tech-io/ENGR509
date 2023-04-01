@@ -76,7 +76,7 @@ class KalmanFilter:
         # print(f"x]{self.x.shape}]+[K]{K.shape}]*[measurements]{np.array([measurements]).shape}")
         measurement_residual = measurements - self.C @ self.x
         # print(f"measurement_residual {measurement_residual.shape}")
-        self.x = self.x + K@ measurement_residual
+        self.x = self.x + K @ measurement_residual
         self.SIGMA = (self.I - K @ self.C) @ self.SIGMA
         # Don't forget to update the time.
         self.prev_t = t
